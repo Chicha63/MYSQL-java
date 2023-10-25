@@ -9,22 +9,15 @@ public class DBConnection {
 
     public DBConnection() {
         try{
-            this.connection = DriverManager.getConnection(connectionUrl);
+            connection = DriverManager.getConnection(connectionUrl);
             statement = connection.createStatement();
         }catch (SQLException exception){
             exception.printStackTrace();
         }
     }
 
-    public void selectAllFromEmployees(){
-        try {
-            String request = "SELECT * FROM HR.Employees";
-            ResultSet resultSet = statement.executeQuery(request);
-            while (resultSet.next()){
-                System.out.println(resultSet.getString("firstname")+ " " +resultSet.getString("lastname"));
-            }
-        }catch (SQLException ex){
-            ex.printStackTrace();
-        }
+    public ResultSet selectAllFromTable(String tablename) throws SQLException {
+        String request = "SELECT * FROM "+tablename;
+        return statement.executeQuery(request);
     }
 }
