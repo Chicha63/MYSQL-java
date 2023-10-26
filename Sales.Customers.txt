@@ -1,7 +1,0 @@
-1 Customer NRZBB Allen, Michael Sales Representative Obere Str. 0123 Berlin  10092 Germany 030-3456789 030-0123456 
-2 Customer MLTDN Hassall, Mark Owner Avda. de la Constitución 5678 México D.F.  10077 Mexico (5) 789-0123 (5) 456-7890 
-3 Customer KBUDE Peoples, John Owner Mataderos  7890 México D.F.  10097 Mexico (5) 123-4567  
-4 Customer HFBZG Arndt, Torsten Sales Representative 7890 Hanover Sq. London  10046 UK (171) 456-7890 (171) 456-7891 
-5 Customer HGVLZ Higginbotham, Tom Order Administrator Berguvsvägen  5678 Luleå  10112 Sweden 0921-67 89 01 0921-23 45 67 
-6 Customer XHXJV Poland, Carole Sales Representative Forsterstr. 7890 Mannheim  10117 Germany 0621-67890 0621-12345 
-7 Customer QXVLA Bansal, Dushyant Marketing Manager 2345, place Kléber Strasbourg  10089 France 67.89.01.23 67.89.01.24 
