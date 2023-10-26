@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MYSQL java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MYSQL_java_jar</output-path>
+    <root id="archive" name="MYSQL java.jar">
+      <element id="module-output" name="MYSQL java" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Program Files/Microsoft JDBC DRIVER 12.4 for SQL Server/sqljdbc_12.4/rus/jars/mssql-jdbc-12.4.1.jre11.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

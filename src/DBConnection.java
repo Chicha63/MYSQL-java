@@ -7,6 +7,10 @@ public class DBConnection {
     private Connection connection;
     private Statement statement;
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     public DBConnection() {
         try{
             connection = DriverManager.getConnection(connectionUrl);
@@ -16,8 +20,13 @@ public class DBConnection {
         }
     }
 
-    public ResultSet selectAllFromTable(String tablename) throws SQLException {
-        String request = "SELECT * FROM "+tablename;
+    public ResultSet selectAllFromTable(String tablename, boolean includeTop, String paramVal) throws SQLException {
+        String request = "SELECT " +
+                (includeTop ? "TOP " + paramVal : "") +
+                " * FROM " +
+                tablename;
         return statement.executeQuery(request);
     }
+
+
 }

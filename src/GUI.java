@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,48 +15,81 @@ import java.sql.SQLException;
 
 
 public class GUI extends JFrame{
+    boolean isChecked = false;
     Path path;
     private DefaultTableModel tableModel;
+    DBConnection connection;
     private JTable table;
+
+    //Constructor
     public GUI() throws HeadlessException {
+        try {
+            connection = new DBConnection();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         setTitle("MSSQL");
         setSize(600,400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         tableModel = new DefaultTableModel();
         table = new JTable(tableModel);
+        table.setAutoCreateRowSorter(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(580, 350));
-
-        JTextArea tablename = new JTextArea(1,10);
-
-
+        JRadioButton includeTop = new JRadioButton("Include top");
+        JTextArea topLimit = new JTextArea(1,4);
+        topLimit.setEnabled(false);
+        topLimit.setText(null);
         JButton loadButton = new JButton("Select");
+        JComboBox<String> tableSelector = new JComboBox<>();
+        JButton toTxtButton = new JButton("To text file");
+
+        //Filling combobox
+        try {
+            ResultSet resultSet = connection.getConnection().getMetaData().getTables(null,null,"%", new String[]{"TABLE"});
+            while (resultSet.next()){
+                tableSelector.addItem(resultSet.getString(2)+"."+resultSet.getString(3));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        //Action Listeners
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!tablename.getText().isBlank()){
-                    fetchData(tablename.getText());
+                if (tableSelector.getSelectedItem() != null){
+                    fetchData(tableSelector.getSelectedItem().toString(), isChecked, topLimit.getText());
                 }else {
                     tableModel.addRow(new String[]{"Enter a valid table name"});
                 }
             }
         });
 
-        JButton toTxtButton = new JButton("To text file");
+        includeTop.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                isChecked = !isChecked;
+                topLimit.setEnabled(!topLimit.isEnabled());
+            }
+        });
+
         toTxtButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                writeToFile(tablename.getText());
+                writeToFile(tableSelector.getSelectedItem().toString());
             }
         });
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(loadButton);
-        buttonPanel.add(tablename);
+        buttonPanel.add(tableSelector);
         buttonPanel.add(toTxtButton);
-
+        buttonPanel.add(includeTop);
+        buttonPanel.add(topLimit);
         getContentPane().setLayout(new BorderLayout());
         add(buttonPanel, BorderLayout.SOUTH);
         add(scrollPane, BorderLayout.CENTER);
@@ -63,12 +98,11 @@ public class GUI extends JFrame{
         setVisible(true);
     }
 
-    private void fetchData(String tablename){
+    private void fetchData(String tablename, boolean includeTop, String limit){
         tableModel.setColumnCount(0);
         tableModel.setRowCount(0);
         try{
-            DBConnection connection = new DBConnection();
-            ResultSet resultSet = connection.selectAllFromTable(tablename);
+            ResultSet resultSet = connection.selectAllFromTable(tablename, includeTop, limit);
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int columnCount = rsmd.getColumnCount();
             for (int i = 1; i <= columnCount; i++){
