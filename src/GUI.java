@@ -17,8 +17,9 @@ import java.sql.SQLException;
 public class GUI extends JFrame{
     boolean isChecked = false;
     Path path;
-    private DefaultTableModel tableModel;
     DBConnection connection;
+
+    private DefaultTableModel tableModel;
     private JTable table;
 
     //Constructor
@@ -28,6 +29,7 @@ public class GUI extends JFrame{
         }catch (Exception ex){
             ex.printStackTrace();
         }
+
         setTitle("MSSQL");
         setSize(600,400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
